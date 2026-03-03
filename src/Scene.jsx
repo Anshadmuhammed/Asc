@@ -37,14 +37,44 @@ function InteractiveParticleField({ count = 5000, color = "#3b82f6", size = 0.05
   }, [count, radius, flattenY]);
 
   const scratchVec = new THREE.Vector3();
+  const targetPointer = useRef(new THREE.Vector2(-9999, -9999)); // Initially off-screen
+
+  useEffect(() => {
+    const handlePointer = (e) => {
+      let clientX, clientY;
+      if (e.touches && e.touches.length > 0) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+      } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
+      }
+
+      if (clientX !== undefined) {
+        // Normalize to WebGL coordinates (-1 to 1)
+        targetPointer.current.x = (clientX / window.innerWidth) * 2 - 1;
+        targetPointer.current.y = -(clientY / window.innerHeight) * 2 + 1;
+      }
+    };
+
+    window.addEventListener('mousemove', handlePointer, { passive: true });
+    window.addEventListener('touchmove', handlePointer, { passive: true });
+    window.addEventListener('touchstart', handlePointer, { passive: true });
+
+    return () => {
+      window.removeEventListener('mousemove', handlePointer);
+      window.removeEventListener('touchmove', handlePointer);
+      window.removeEventListener('touchstart', handlePointer);
+    };
+  }, []);
 
   useFrame((state) => {
     if (!mesh.current || !mesh.current.geometry.attributes.position) return;
 
-    // 1. Capture exact mouse state dynamically in the 3D viewport space
+    // 1. Capture exact mouse/touch state dynamically in the 3D viewport space via our global listener
     scratchVec.set(
-      (state.mouse.x * state.viewport.width) / 2,
-      (state.mouse.y * state.viewport.height) / 2,
+      (targetPointer.current.x * state.viewport.width) / 2,
+      (targetPointer.current.y * state.viewport.height) / 2,
       0
     );
 
@@ -137,7 +167,8 @@ function InteractiveParticleField({ count = 5000, color = "#3b82f6", size = 0.05
 
 export default function Scene() {
   // Adaptive Performance: Dynamically scale particle count based on user's screen size!
-  const [isMobile, setIsMobile] = useState(false);
+  // Initialize cleanly by checking immediately instead of waiting for useEffect
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 768 : false);
 
   useEffect(() => {
     // Determine if device is a phone/tablet (screen width < 768px)
@@ -153,6 +184,7 @@ export default function Scene() {
 
       {/* Dynamic Swarm - Adjusts count based on screen size for guaranteed lag-free mobile frames */}
       <InteractiveParticleField
+        key={isMobile ? 'mobile-layer-1' : 'desktop-layer-1'}
         count={isMobile ? 3000 : 8000}
         color="#3b82f6"
         size={0.03}
@@ -163,6 +195,7 @@ export default function Scene() {
 
       {/* Top Layer Swarm */}
       <InteractiveParticleField
+        key={isMobile ? 'mobile-layer-2' : 'desktop-layer-2'}
         count={isMobile ? 1000 : 2000}
         color="#ffffff"
         size={0.05}

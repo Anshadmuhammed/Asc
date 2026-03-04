@@ -4,6 +4,7 @@ import Scene from './Scene';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
+import logoImg from './assets/logo.png';
 
 export default function Journey() {
     const navigate = useNavigate();
@@ -70,7 +71,8 @@ export default function Journey() {
 
             {/* Content Form Overlay */}
             <main style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '6rem 5vw' }}>
-                <div className="glass" ref={formRef} style={{ padding: '4rem', borderRadius: '16px', maxWidth: '600px', width: '100%', textAlign: 'center' }}>
+                <div className="glass" ref={formRef} style={{ padding: 'clamp(2rem, 5vw, 4rem)', borderRadius: '16px', maxWidth: '600px', width: '100%', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+
                     <h1 style={{ fontSize: '3rem', color: 'var(--color-gold)', marginBottom: '1rem', fontFamily: 'var(--font-serif)' }}>
                         Begin Your Journey
                     </h1>
@@ -81,17 +83,17 @@ export default function Journey() {
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', textAlign: 'left' }}>
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', opacity: 0.9 }}>Full Name</label>
-                            <input type="text" placeholder="John" required style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }} />
+                            <input type="text" required style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }} />
                         </div>
 
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', opacity: 0.9 }}>Email</label>
-                            <input type="email" placeholder="abcd@gmail.com" required style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }} />
+                            <input type="email" required style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }} />
                         </div>
 
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', opacity: 0.9 }}>Ph.no</label>
-                            <input type="tel" placeholder="+917034709027" required style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }} />
+                            <input type="tel" required style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }} />
                         </div>
 
                         <div>

@@ -153,7 +153,7 @@ function App() {
               }}
             />
           </div>
-          <span style={{ fontSize: 'clamp(0.9rem, 4vw, 1.2rem)', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Ascetic Edu Solution</span>
+          <span style={{ fontSize: 'clamp(1.05rem, 4.5vw, 1.25rem)', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Ascetic Edu Solution</span>
         </div>
 
         {/* Mobile Menu Toggle Button */}

@@ -9,6 +9,7 @@ import logoImg from './assets/logo.png';
 export default function Journey() {
     const navigate = useNavigate();
     const [showPopup, setShowPopup] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const containerRef = useRef(null);
     const formRef = useRef(null);
 
@@ -34,9 +35,36 @@ export default function Journey() {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setShowPopup(true);
+        setIsSubmitting(true);
+
+        // This is the URL from your Google Apps Script Deployment
+        // The user's live Google Apps Script Deployment URL pointing to their Google Sheet
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzllpxBSiuBF7ZpKverUKTxgPzycnf3OHu8Aiyk8mZ3hFbG8oiEnKJLGrd6eEZ9Atf5/exec";
+
+        try {
+            const formData = new FormData(e.target);
+
+            // Only attempt to fetch if the user has provided a real script URL
+            if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.includes("script.google.com")) {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors' // Bypasses strictly enforced Google CORS policies
+                });
+            } else {
+                console.warn("Google Script URL is not set. Simulating form submission.");
+            }
+
+            setShowPopup(true);
+            e.target.reset(); // Clear the form
+        } catch (error) {
+            console.error('Error!', error.message);
+            alert("There was an error submitting your form. Please try again.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleOk = () => {
@@ -83,22 +111,22 @@ export default function Journey() {
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', textAlign: 'left' }}>
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', opacity: 0.9 }}>Full Name</label>
-                            <input type="text" required style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }} />
+                            <input type="text" name="name" required style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }} />
                         </div>
 
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', opacity: 0.9 }}>Email</label>
-                            <input type="email" required style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }} />
+                            <input type="email" name="email" required style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }} />
                         </div>
 
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', opacity: 0.9 }}>Ph.no</label>
-                            <input type="tel" required style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }} />
+                            <input type="tel" name="phone" required style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }} />
                         </div>
 
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', opacity: 0.9 }}>State</label>
-                            <select required defaultValue="" style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }}>
+                            <select name="state" required defaultValue="" style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }}>
                                 <option value="" disabled style={{ background: '#111', color: 'gray' }}>Select your state</option>
                                 {[
                                     'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal',
@@ -111,21 +139,21 @@ export default function Journey() {
 
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', opacity: 0.9 }}>Target Course</label>
-                            <input type="text" placeholder="e.g. Bca" required style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }} />
+                            <input type="text" name="course" placeholder="e.g. Bca" required style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }} />
                         </div>
 
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', opacity: 0.9 }}>Target Institution</label>
-                            <input type="text" placeholder="e.g. IIM Bangalore" required style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }} />
+                            <input type="text" name="institution" placeholder="e.g. IIM Bangalore" required style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none' }} />
                         </div>
 
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', opacity: 0.9 }}>Additional Details</label>
-                            <textarea rows="4" placeholder="Tell us about your academic background..." style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none', resize: 'vertical' }}></textarea>
+                            <textarea name="details" rows="4" placeholder="Tell us about your academic background..." style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white', outline: 'none', resize: 'vertical' }}></textarea>
                         </div>
 
-                        <button type="submit" className="btn-primary" style={{ marginTop: '1rem', padding: '1rem', width: '100%' }}>
-                            Submit Request
+                        <button type="submit" disabled={isSubmitting} className="btn-primary" style={{ marginTop: '1rem', padding: '1rem', width: '100%', opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}>
+                            {isSubmitting ? 'Submitting...' : 'Submit Request'}
                         </button>
                     </form>
                 </div>

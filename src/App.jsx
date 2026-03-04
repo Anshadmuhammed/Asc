@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import Scene from './Scene';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Link, useNavigate } from 'react-router-dom';
 import { Compass, MessageSquare, Award, ArrowRight, Globe, Mail, Instagram, Menu, X } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -15,6 +16,7 @@ function App() {
   const contactRef = useRef(null);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -24,7 +26,25 @@ function App() {
     setIsMobileMenuOpen(false);
   };
 
+  const handleJourneyClick = (e) => {
+    e.preventDefault();
+    gsap.to(containerRef.current, {
+      opacity: 0,
+      duration: 0.5,
+      ease: "power2.inOut",
+      onComplete: () => {
+        navigate('/journey');
+      }
+    });
+  };
+
   useEffect(() => {
+    // Fade in entire page on mount
+    gsap.fromTo(containerRef.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.6, ease: "power2.out" }
+    );
+
     // Basic Hero Fade Out on Scroll
     gsap.to(heroRef.current, {
       opacity: 0,
@@ -130,9 +150,11 @@ function App() {
         <section className="hero" ref={heroRef} id="home">
           <h1>Clarity in the Pursuit of Academic Excellence.</h1>
           <p>Bespoke consultancy for premier institutions all over India.</p>
-          <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '0 auto' }}>
-            Begin Your Journey <ArrowRight size={18} />
-          </button>
+          <a href="/journey" onClick={handleJourneyClick} style={{ textDecoration: 'none' }}>
+            <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '0 auto' }}>
+              Begin Your Journey <ArrowRight size={18} />
+            </button>
+          </a>
         </section>
 
         {/* Section 2: About Ascetic Philosophy */}
@@ -161,7 +183,7 @@ function App() {
 
             <div className="glass director-card animate-me" style={{ gridColumn: '1 / -1', padding: '3rem', borderRadius: '16px', marginTop: '1rem', borderTop: '2px solid rgba(59, 130, 246, 0.2)' }}>
               <div style={{ maxWidth: '800px' }}>
-                <h3 style={{ fontSize: '2.5rem', color: 'var(--color-gold)', marginBottom: '0.25rem', fontFamily: 'var(--font-serif)' }}>Akbar PA</h3>
+                <h3 style={{ fontSize: '2.5rem', color: 'var(--color-gold)', marginBottom: '0.25rem', fontFamily: 'var(--font-serif)' }}>AKBAR PA</h3>
                 <h4 style={{ fontSize: '1.1rem', opacity: 0.8, marginBottom: '1.5rem', fontWeight: 400, letterSpacing: '1px', textTransform: 'uppercase' }}>Managing Director</h4>
                 <p style={{ lineHeight: 1.8, fontSize: '1.1rem', opacity: 0.9, fontStyle: 'italic' }}>
                   "Our vision at Ascetic Edu Solution is not simply to secure admissions, but to sculpt the intellectual leaders of tomorrow. We believe that with absolute discipline, curated mentorship, and a pure pursuit of academic excellence, every ambitious student can conquer the elite realms of Indian academia."

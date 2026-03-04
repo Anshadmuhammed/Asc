@@ -128,10 +128,11 @@ function App() {
 
       {/* Navigation (Glassmorphic) */}
       <nav className="navbar glass-dark">
-        <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(8px, 2vw, 12px)' }}>
           <div style={{
-            width: '65px',
-            height: '65px',
+            width: 'clamp(40px, 10vw, 65px)',
+            height: 'clamp(40px, 10vw, 65px)',
+            flexShrink: 0,
             borderRadius: '50%',
             overflow: 'hidden',
             backgroundColor: 'white',
@@ -152,7 +153,7 @@ function App() {
               }}
             />
           </div>
-          <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>Ascetic Edu Solution</span>
+          <span style={{ fontSize: 'clamp(0.9rem, 4vw, 1.2rem)', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Ascetic Edu Solution</span>
         </div>
 
         {/* Mobile Menu Toggle Button */}

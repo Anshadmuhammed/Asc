@@ -104,7 +104,7 @@ export default function Chatbot() {
     return (
         <>
             {/* Floating Action Button with Dynamic Tooltip */}
-            <div style={{ position: 'fixed', bottom: '2rem', right: '8rem', zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div className="chatbot-btn-wrapper">
 
                 {/* Pop-up Notification Balloon */}
                 <div style={{
@@ -138,8 +138,8 @@ export default function Chatbot() {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        border: '2px solid var(--color-gold)',
-                        boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+                        border: 'none',
+                        boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
                         cursor: 'pointer',
                         transition: 'transform 0.3s ease',
                         backgroundColor: isOpen ? 'var(--color-charcoal)' : 'rgba(10, 25, 47, 0.7)'
@@ -147,32 +147,13 @@ export default function Chatbot() {
                     onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
                     onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
                 >
-                    {isOpen ? <X size={28} color="var(--color-gold)" /> : <MessageSquare size={28} color="var(--color-gold)" />}
+                    {isOpen ? <X size={32} color="var(--color-gold)" /> : <MessageSquare size={32} color="var(--color-gold)" />}
                 </button>
             </div>
 
             {/* Chat Window Popup */}
             {isOpen && (
-                <div
-                    className="glass-dark"
-                    style={{
-                        position: 'fixed',
-                        bottom: '6.5rem',
-                        right: '8rem',
-                        zIndex: 9999,
-                        width: 'clamp(300px, 90vw, 380px)',
-                        height: '500px',
-                        maxHeight: '75vh',
-                        borderRadius: '16px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        overflow: 'hidden',
-                        border: '1px solid rgba(212, 175, 55, 0.3)',
-                        boxShadow: '0 10px 40px rgba(0,0,0,0.5)',
-                        transition: 'opacity 0.3s ease, transform 0.3s ease',
-                        animation: 'slideUp 0.3s ease-out'
-                    }}
-                >
+                <div className="glass-dark chatbot-popup-window">
                     {/* Header */}
                     <div style={{
                         padding: '1rem',

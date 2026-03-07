@@ -420,3 +420,63 @@ footer {
     padding: 1.5rem !important;
   }
 }
+
+/* Chatbot Global Styling */
+.chatbot-btn-wrapper {
+  position: fixed;
+  bottom: 2rem;
+  right: 8rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chatbot-popup-window {
+  position: fixed;
+  bottom: 6.5rem;
+  right: 8rem;
+  z-index: 9999;
+  width: clamp(300px, 90vw, 380px);
+  height: 500px;
+  max-height: 75vh;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  animation: slideUp 0.3s ease-out;
+}
+
+@media (max-width: 768px) {
+  .chatbot-btn-wrapper {
+    right: 2rem;
+    bottom: 7rem;
+    /* Cleanly above WhatsApp */
+  }
+
+  .chatbot-popup-window {
+    right: 5vw;
+    bottom: 12rem;
+    width: 90vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .chatbot-btn-wrapper {
+    right: 2rem;
+    /* Exact axis lock with WhatsApp */
+    bottom: 7rem;
+  }
+
+  .chatbot-popup-window {
+    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95vw;
+    height: 60vh;
+    bottom: 12rem;
+  }
+}
